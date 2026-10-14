@@ -1,0 +1,37 @@
+name: Checks
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: library
+          POSTGRES_DB: library
+          POSTGRES_PASSWORD: ci-only-password
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U library -d library"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://library:ci-only-password@127.0.0.1:5432/library
+      PAYLOAD_SECRET: ci-only-secret-for-isolated-tests-never-use-in-production
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: NODE_ENV=production npm run migrate
+      - run: NODE_ENV=production npm run migrate
+      - run: npm run test:static
+      - run: npm run build:static
+      - run: npm test
+      - run: npm run build
+      - run: npm run seed
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser

@@ -1,0 +1,56 @@
+{
+  "name": "womens-health-library",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build --webpack",
+    "start": "next start --hostname 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "seed": "tsx scripts/seed.ts",
+    "test": "tsx --test --test-force-exit tests/*.test.ts",
+    "generate:importmap": "payload generate:importmap",
+    "test:browser": "playwright test",
+    "draft:discharge": "tsx scripts/import-discharge-draft.ts",
+    "review:export": "tsx scripts/export-review.ts",
+    "migrate": "payload migrate",
+    "migrate:create": "payload migrate:create",
+    "migrate:verify": "tsx scripts/verify-migrations.ts",
+    "backup:local": "node scripts/backup-local.mjs",
+    "backup:verify": "node scripts/verify-backup.mjs",
+    "static:snapshot": "tsx scripts/snapshot-static.ts",
+    "build:static": "tsx scripts/build-static.tsx",
+    "static:export": "npm run static:snapshot && npm run build:static",
+    "static:preview": "npm run static:snapshot -- --preview && tsx scripts/build-static.tsx --preview",
+    "test:static": "tsx --test tests/static.test.ts",
+    "serve:static": "node scripts/serve-static.mjs",
+    "test:static:browser": "playwright test --config playwright.static.config.ts"
+  },
+  "dependencies": {
+    "@payloadcms/db-postgres": "3.90.2",
+    "@payloadcms/next": "3.90.2",
+    "graphql": "^16.11.0",
+    "next": "16.3.8",
+    "payload": "3.90.2",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "sharp": "0.35.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  },
+  "overrides": {
+    "sass": "1.105.1",
+    "undici": "7.30.0",
+    "dompurify": "3.4.17",
+    "@esbuild-kit/core-utils": {
+      "esbuild": "0.25.12"
+    }
+  }
+}

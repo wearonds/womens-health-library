@@ -1,0 +1,5 @@
+import Link from 'next/link'
+import type { PublicSiteSettings, ArticleContent } from '@/static/types'
+export function HomeView({ settings, articles }: { settings: PublicSiteSettings; articles: ArticleContent[] }) {
+  return <><section className="hero"><span className="tag">สำหรับอ่านทบทวนหลังพบแพทย์</span><h1>เข้าใจเรื่องสุขภาพ<br />ดูแลตัวเองได้ดีขึ้น</h1><p>{settings.introduction}</p></section><section aria-labelledby="topics"><h2 id="topics">เลือกบทความที่ต้องการอ่าน</h2>{articles.length ? <div className="cards">{articles.map(article => <Link className="card" key={article.slug} href={`/articles/${article.slug}`}><h3>{article.title}</h3><p>{article.description}</p><span className="read">อ่านบทความ →</span></Link>)}</div> : <div className="panel"><h3>กำลังเตรียมบทความ</h3><p>บทความจะปรากฏที่นี่เมื่อผ่านการตรวจทานและเผยแพร่แล้ว</p></div>}</section><aside className="note"><p>หากมีอาการเร่งด่วน ควรติดต่อสถานพยาบาล ไม่ควรรออ่านข้อมูลบนเว็บไซต์</p></aside></>
+}

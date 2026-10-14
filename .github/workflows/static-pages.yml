@@ -1,0 +1,42 @@
+name: Static website
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Publish the public snapshot to GitHub Pages'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      STATIC_BASE_PATH: /${{ github.event.repository.name }}
+      STATIC_SITE_URL: https://${{ github.repository_owner }}.github.io
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run test:static
+      - run: npm run build:static
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+  deploy:
+    if: inputs.publish
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

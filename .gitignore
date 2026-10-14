@@ -1,0 +1,10 @@
+node_modules/
+.next/
+.env*
+!.env.example
+media/
+*.tsbuildinfo
+.local/
+test-results/
+playwright-report/
+out/
