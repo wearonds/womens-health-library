@@ -9,7 +9,7 @@ if (manifest.generator !== 'womens-health-library-static-v1') throw new Error('O
 const basePath = manifest.basePath
 const port = Number(values.port)
 if (!Number.isInteger(port) || port < 1024 || port > 65535) throw new Error('Invalid port')
-const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.xml': 'application/xml; charset=utf-8', '.txt': 'text/plain; charset=utf-8' }
+const types = { '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json; charset=utf-8', '.xml': 'application/xml; charset=utf-8', '.txt': 'text/plain; charset=utf-8' }
 const server = createServer(async (req, res) => {
   if (!['GET', 'HEAD'].includes(req.method)) { res.writeHead(405); res.end(); return }
   try {

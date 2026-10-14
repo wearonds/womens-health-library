@@ -5,6 +5,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { HomeView } from '../src/components/HomeView'
 import { AboutView } from '../src/components/AboutView'
 import { ArticleView } from '../src/components/ArticleView'
+import { articleIllustrations } from '../src/components/ArticleIllustration'
 import { SiteFrame } from '../src/components/SiteFrame'
 import { validateSnapshot } from '../src/static/snapshot'
 import type { StaticSnapshot } from '../src/static/types'
@@ -48,10 +49,11 @@ try {
     )
     // Next Link becomes ordinary HTML. Resolve its root links for project Pages.
     const withPaths = html.replace(/(<a\b[^>]*\bhref=")\/(?!\/)([^"]*)(")/g, (_, prefix: string, link: string, suffix: string) => `${prefix}${routeURL('/' + link)}${suffix}`)
-    if (/<script\b/i.test(withPaths)) throw new Error('Static output unexpectedly contains executable scripts')
+    const withAssets = withPaths.replace(/(<img\b[^>]*\bsrc=")\/(?!\/)([^"]*)(")/g, (_, prefix: string, asset: string, suffix: string) => `${prefix}${basePath}/${asset}${suffix}`)
+    if (/<script\b/i.test(withAssets)) throw new Error('Static output unexpectedly contains executable scripts')
     const target = route === '/' ? 'index.html' : `${route.replace(/^\//, '')}/index.html`
     await mkdir(path.dirname(path.join(staging, target)), { recursive: true })
-    await writeFile(path.join(staging, target), withPaths)
+    await writeFile(path.join(staging, target), withAssets)
     pages.push(route)
   }
   await page('/', 'อ่านทบทวนหลังพบแพทย์', snapshot.site.introduction, <HomeView settings={snapshot.site} articles={snapshot.articles} />)
@@ -61,6 +63,11 @@ try {
   await writeFile(path.join(staging, '404.html'), notFound)
   await mkdir(path.join(staging, 'assets'))
   await writeFile(path.join(staging, 'assets/styles.css'), await readFile('src/app/(public)/styles.css'))
+  for (const illustration of Object.values(articleIllustrations)) {
+    const asset = illustration.src.slice(1)
+    await mkdir(path.dirname(path.join(staging, asset)), { recursive: true })
+    await writeFile(path.join(staging, asset), await readFile(path.join('public', asset)))
+  }
   await writeFile(path.join(staging, '.nojekyll'), '')
   await writeFile(path.join(staging, 'robots.txt'), preview ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\n${siteURL ? `Sitemap: ${siteURL.origin}${basePath}/sitemap.xml\n` : ''}`)
   if (siteURL && !preview) await writeFile(path.join(staging, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${pages.map(route => `<url><loc>${xmlEscape(siteURL.origin + routeURL(route))}</loc></url>`).join('')}</urlset>`)

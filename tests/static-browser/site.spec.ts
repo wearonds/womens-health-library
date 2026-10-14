@@ -16,6 +16,12 @@ test('all four static preview pages work on mobile with JavaScript disabled', as
       await expect(page.getByRole('heading', { level: 1 })).toHaveText(title)
       await expect(page.locator('script')).toHaveCount(0)
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy()
+      if (slug === 'uterine-fibroids') {
+        const diagram = page.getByRole('img', { name: /ภาพแผนผังมดลูก/ })
+        await expect(diagram).toBeVisible()
+        expect(await diagram.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth > 0)).toBeTruthy()
+        await expect(diagram).toHaveAttribute('src', project + '/illustrations/uterine-fibroids.png')
+      }
       const firstTopic = page.locator('.contents a').first()
       await firstTopic.click()
       await expect(page).toHaveURL(/#section-0$/)
@@ -25,7 +31,7 @@ test('all four static preview pages work on mobile with JavaScript disabled', as
     }
     await page.getByRole('link', { name: 'เกี่ยวกับเว็บไซต์', exact: true }).first().click()
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('เกี่ยวกับเว็บไซต์')
-    expect(await page.locator('body').evaluate(el => getComputedStyle(el).fontSize)).toBe('18px')
+    expect(await page.locator('body').evaluate(el => getComputedStyle(el).fontSize)).toBe('17px')
   } finally { await context.close() }
 })
 
@@ -40,6 +46,9 @@ test('release excludes unapproved articles, CMS routes and credential files', as
     expect(await response.text()).not.toContain('ตรวจทานทางการแพทย์โดย')
   }
   for (const route of ['/admin/', '/api/articles/', '/.env', '/.local/admin-login.txt', '/content/articles/vaginal-discharge.json']) expect((await request.get(release + route)).status()).toBe(404)
+  const illustration = await request.get(release + '/illustrations/uterine-fibroids.png')
+  expect(illustration.status()).toBe(200)
+  expect(illustration.headers()['content-type']).toContain('image/png')
   const styles = await request.get(release + '/assets/styles.css')
   expect(styles.status()).toBe(200)
   expect(styles.headers()['content-type']).toContain('text/css')
