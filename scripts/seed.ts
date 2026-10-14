@@ -10,7 +10,7 @@ try {
   let admin = (await payload.find({ collection: 'users', where: { role: { equals: 'admin' } }, limit: 1 })).docs[0]
   if (!admin) {
     const password = randomBytes(24).toString('base64url')
-    admin = await payload.create({ collection: 'users', data: { email: 'admin@localhost.invalid', password, name: 'ผู้ดูแลระบบทดสอบ', role: 'admin' } })
+    admin = await payload.create({ collection: 'users', data: { email: 'admin@localhost.invalid', password, name: 'ผู้จัดทำคลังความรู้สุขภาพสตรี', role: 'admin' } })
     await mkdir('.local', { recursive: true, mode: 0o700 })
     await writeFile('.local/admin-login.txt', `Local development only\nEmail: admin@localhost.invalid\nPassword: ${password}\n`, { mode: 0o600, flag: 'wx' })
     console.log('Local administrator created. Credentials are in ignored .local/admin-login.txt (not printed).')

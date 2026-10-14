@@ -189,6 +189,7 @@ export interface Article {
     | null;
   workflow: 'draft' | 'review' | 'approved' | 'published';
   reviewedBy?: (number | null) | User;
+  reviewCategory: 'editorial' | 'medical';
   reviewerName?: string | null;
   reviewedAt?: string | null;
   approvedFingerprint?: string | null;
@@ -366,6 +367,7 @@ export interface ArticlesSelect<T extends boolean = true> {
       };
   workflow?: T;
   reviewedBy?: T;
+  reviewCategory?: T;
   reviewerName?: T;
   reviewedAt?: T;
   approvedFingerprint?: T;

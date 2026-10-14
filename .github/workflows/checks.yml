@@ -34,5 +34,6 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: npm run seed
+      - run: node --import tsx scripts/publish-starter-articles.ts --editorial
       - run: npx playwright install --with-deps chromium
       - run: npm run test:browser

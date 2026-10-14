@@ -12,8 +12,8 @@ test('medical workflow: permissions, approval invalidation, public isolation, wi
   const users: any[] = []
   let articleID: number | undefined
   try {
-    for (const role of ['author', 'reviewer', 'publisher'] as const) users.push(await payload.create({ collection: 'users', data: { email: `${role}-${suffix}@localhost.invalid`, password: randomBytes(24).toString('hex'), name: `Test ${role}`, role }, user: { id: 0, collection: 'users', role: 'admin' } as any }))
-    const [author, reviewer, publisher] = users
+    for (const role of ['author', 'reviewer', 'publisher', 'admin'] as const) users.push(await payload.create({ collection: 'users', data: { email: `${role}-${suffix}@localhost.invalid`, password: randomBytes(24).toString('hex'), name: `Test ${role}`, role }, user: { id: 0, collection: 'users', role: 'admin' } as any }))
+    const [author, reviewer, publisher, owner] = users
     const article = await payload.create({ collection: 'articles', overrideAccess: false, user: author, draft: true, data: { title: 'Test article', slug: `test-${suffix}`, description: 'Test only', summary: [{ text: 'Test summary' }], urgentSymptoms: 'Test warning', sections: [{ heading: 'Test section', body: 'Original body' }], references: [{ title: 'Test source', url: 'https://example.com/reference' }], workflow: 'draft' } })
     articleID = article.id
     const update = (user: any, data: any, draft = true) => payload.update({ collection: 'articles', id: article.id, overrideAccess: false, user, draft, data })
@@ -23,6 +23,7 @@ test('medical workflow: permissions, approval invalidation, public isolation, wi
     await assert.rejects(() => update(author, { _status: 'published', workflow: 'published' }, false), /ไม่มีสิทธิ์/)
     await assert.rejects(() => update(publisher, { _status: 'published', workflow: 'published' }, false), /ต้องผ่านการตรวจทาน/)
     await update(reviewer, { workflow: 'approved' })
+    assert.equal((await payload.findByID({ collection: 'articles', id: article.id, draft: true })).reviewCategory, 'medical')
     await update(author, { sections: [{ heading: 'Test section', body: 'Changed after approval' }] })
     await assert.rejects(() => update(publisher, { _status: 'published', workflow: 'published' }, false), /ต้องผ่านการตรวจทาน/)
     await update(reviewer, { workflow: 'approved' })
@@ -41,6 +42,12 @@ test('medical workflow: permissions, approval invalidation, public isolation, wi
     assert.equal(unchanged.role, 'author', 'self-edit must not escalate permissions')
     await update(publisher, { workflow: 'draft', _status: 'draft' }, false)
     assert.equal((await publicDocs()).totalDocs, 0, 'withdrawal must remove public article')
+    await update(owner, { workflow: 'approved' })
+    const spoofed = await update(author, { reviewCategory: 'medical', reviewerName: 'Fake doctor' })
+    assert.equal(spoofed.reviewCategory, 'editorial', 'author cannot forge a medical review')
+    assert.equal(spoofed.reviewerName, owner.name)
+    await update(owner, { workflow: 'published', _status: 'published' }, false)
+    assert.equal((await publicDocs()).docs[0].reviewCategory, 'editorial')
   } catch (error) {
     console.error(error)
     throw error

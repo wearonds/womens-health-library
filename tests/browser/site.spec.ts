@@ -4,14 +4,17 @@ import { readFileSync } from 'node:fs'
 test('mobile reader pages and private draft isolation', async ({ page, request }) => {
   await page.goto('/')
   await expect(page.getByRole('heading', { level: 1 })).toContainText('เข้าใจเรื่องสุขภาพ')
-  await expect(page.getByText('กำลังเตรียมบทความ')).toBeVisible()
+  await expect(page.getByRole('link', { name: /เนื้องอกมดลูก.*อ่านบทความ/ })).toBeVisible()
   await page.getByRole('link', { name: 'เกี่ยวกับเว็บไซต์', exact: true }).first().click()
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('เกี่ยวกับเว็บไซต์')
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy()
   await page.screenshot({ path: 'test-results/about-mobile.png', fullPage: true })
-  for (const path of ['/articles/uterine-fibroids', '/articles/vaginal-discharge', '/preview/uterine-fibroids']) expect((await request.get(path)).status()).toBe(404)
+  for (const path of ['/articles/uterine-fibroids', '/articles/vaginal-discharge']) expect((await request.get(path)).status()).toBe(200)
+  expect((await request.get('/preview/uterine-fibroids')).status()).toBe(404)
   const result = await request.get('/api/articles?draft=true')
-  expect((await result.json()).docs).toEqual([])
+  const docs = (await result.json()).docs
+  expect(docs).toHaveLength(2)
+  expect(docs.every((doc: any) => doc._status === 'published')).toBeTruthy()
 })
 
 test('authenticated mobile preview and editorial publication', async ({ page, context }) => {
@@ -49,7 +52,7 @@ test('authenticated mobile preview and editorial publication', async ({ page, co
     await context.clearCookies()
     await page.goto(`/articles/${slug}`)
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('บทความทดสอบระบบ')
-    await expect(page.getByText('ตรวจทานโดย ผู้ดูแลระบบทดสอบ')).toBeVisible()
+    await expect(page.getByText('อนุมัติเผยแพร่โดย ผู้จัดทำคลังความรู้สุขภาพสตรี')).toBeVisible()
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy()
   } finally {
     await context.request.post('/api/users/login', { data: { email, password } })

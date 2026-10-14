@@ -19,6 +19,7 @@ export const enforceWorkflow: CollectionBeforeChangeHook = ({ data, originalDoc,
   data.reviewedBy = originalDoc?.reviewedBy ?? null
   data.reviewedAt = originalDoc?.reviewedAt ?? null
   data.reviewerName = originalDoc?.reviewerName ?? null
+  data.reviewCategory = originalDoc?.reviewCategory ?? 'editorial'
   let requested = data.workflow ?? originalDoc?.workflow ?? 'draft'
   if (data._status === 'draft' && requested === 'published') {
     // Saving a new draft must preserve the currently published revision.
@@ -38,6 +39,7 @@ export const enforceWorkflow: CollectionBeforeChangeHook = ({ data, originalDoc,
     data.reviewedBy = req.user!.id
     data.reviewedAt = new Date().toISOString()
     data.reviewerName = req.user!.name
+    data.reviewCategory = role === 'reviewer' ? 'medical' : 'editorial'
   }
   const publishing = data._status === 'published' || requested === 'published'
   if (publishing) {
@@ -53,6 +55,7 @@ export const enforceWorkflow: CollectionBeforeChangeHook = ({ data, originalDoc,
       data.reviewedBy = null
       data.reviewedAt = null
       data.reviewerName = null
+      data.reviewCategory = 'editorial'
     } else data.workflow = requested
   }
   return data

@@ -24,6 +24,7 @@ export const Articles: CollectionConfig = {
     { name: 'references', label: 'แหล่งอ้างอิง', type: 'array', fields: [{ name: 'title', type: 'text', required: true }, { name: 'url', type: 'text', required: true, validate: (value: any) => { try { return new URL(value).protocol === 'https:' || 'ใช้ลิงก์ HTTPS' } catch { return 'ลิงก์ไม่ถูกต้อง' } } }] },
     { name: 'workflow', label: 'ขั้นตอนตรวจทาน', type: 'select', defaultValue: 'draft', required: true, options: [{ label: 'ร่าง', value: 'draft' }, { label: 'รอตรวจทาน', value: 'review' }, { label: 'อนุมัติ', value: 'approved' }, { label: 'เผยแพร่', value: 'published' }] },
     { name: 'reviewedBy', type: 'relationship', relationTo: 'users', admin: { readOnly: true }, access: { read: staff, update: () => false } },
+    { name: 'reviewCategory', label: 'ประเภทการอนุมัติ', type: 'select', required: true, defaultValue: 'editorial', options: [{ label: 'ผู้จัดทำอนุมัติเผยแพร่', value: 'editorial' }, { label: 'ผู้ตรวจทานทางการแพทย์', value: 'medical' }], admin: { readOnly: true }, access: { update: () => false } },
     { name: 'reviewerName', label: 'ผู้ตรวจทาน', type: 'text', admin: { readOnly: true }, access: { update: () => false } },
     { name: 'reviewedAt', type: 'date', admin: { readOnly: true }, access: { update: () => false } },
     { name: 'approvedFingerprint', type: 'text', admin: { hidden: true }, access: { read: () => false, update: () => false } },

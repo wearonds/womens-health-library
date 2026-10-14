@@ -8,7 +8,7 @@ import { validateSnapshot } from '../src/static/snapshot'
 import type { StaticSnapshot, StaticArticle } from '../src/static/types'
 
 function snapshot(): StaticSnapshot {
-  const article: StaticArticle = { title: 'บทความทดสอบ', slug: 'test-article', description: 'ข้อมูลทดสอบระบบ', summary: [{ text: 'สรุปทดสอบ' }], urgentSymptoms: 'ข้อความทดสอบ', sections: [{ heading: 'หัวข้อ', body: '<script>alert(1)</script>' }], questions: null, references: [{ title: 'Reference', url: 'https://example.com' }], reviewerName: 'ผู้ตรวจทานทดสอบ', reviewedAt: '2026-10-14T00:00:00Z', publication: { status: 'published', workflow: 'published', approvedFingerprint: null } }
+  const article: StaticArticle = { title: 'บทความทดสอบ', slug: 'test-article', description: 'ข้อมูลทดสอบระบบ', summary: [{ text: 'สรุปทดสอบ' }], urgentSymptoms: 'ข้อความทดสอบ', sections: [{ heading: 'หัวข้อ', body: '<script>alert(1)</script>' }], questions: null, references: [{ title: 'Reference', url: 'https://example.com' }], reviewCategory: 'editorial', reviewerName: 'ผู้ตรวจทานทดสอบ', reviewedAt: '2026-10-14T00:00:00Z', publication: { status: 'published', workflow: 'published', approvedFingerprint: null } }
   article.publication.approvedFingerprint = fingerprint(article as unknown as Record<string, unknown>)
   return { formatVersion: 1, mode: 'public', site: { name: 'เว็บทดสอบ', introduction: 'อ่านทบทวน', purpose: 'ทดสอบ', scope: 'ข้อมูลทดสอบ', reviewProcess: 'ตรวจทาน', team: 'ทีมทดสอบ' }, articles: [article] }
 }

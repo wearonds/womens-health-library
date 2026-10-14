@@ -13,7 +13,7 @@ export function snapshotArticle(article: Article): StaticArticle {
     sections: article.sections?.map(({ heading, body }) => ({ heading, body })) ?? null,
     questions: article.questions?.map(({ text }) => ({ text })) ?? null,
     references: article.references?.map(({ title, url }) => ({ title, url })) ?? null,
-    reviewerName: article.reviewerName ?? null, reviewedAt: article.reviewedAt ?? null,
+    reviewCategory: article.reviewCategory ?? 'editorial', reviewerName: article.reviewerName ?? null, reviewedAt: article.reviewedAt ?? null,
     publication: { status: article._status ?? 'draft', workflow: article.workflow, approvedFingerprint: article.approvedFingerprint ?? null },
   }
 }
@@ -23,6 +23,7 @@ export function validateSnapshot(snapshot: StaticSnapshot, mode: 'public' | 'pre
   for (const article of snapshot.articles) {
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(article.slug) || slugs.has(article.slug)) throw new Error('Invalid or duplicate article slug')
     slugs.add(article.slug)
+    if (!['editorial', 'medical'].includes(article.reviewCategory)) throw new Error('Missing or invalid approval category')
     for (const reference of article.references ?? []) if (new URL(reference.url).protocol !== 'https:') throw new Error('Only HTTPS references are allowed')
     if (mode === 'public') {
       if (article.publication.status !== 'published' || article.publication.workflow !== 'published' || article.publication.approvedFingerprint !== fingerprint(article as unknown as Record<string, unknown>) || !article.reviewerName || !article.reviewedAt || !Number.isFinite(Date.parse(article.reviewedAt))) throw new Error(`Refusing to export an unapproved or changed article: ${article.slug}`)

@@ -19,6 +19,7 @@ try {
     if (result.status !== 0) throw new Error(`Migration command failed with exit ${result.status}`)
   }
   run()
+  assert.equal(sql(fixture, "SELECT count(*) FROM information_schema.columns WHERE table_schema='public' AND ((table_name='articles' AND column_name='review_category') OR (table_name='_articles_v' AND column_name='version_review_category'))"), '2')
   assert.equal(sql(fixture, "SELECT count(*) FROM payload_migrations WHERE name LIKE '%initial_schema'"), '1')
   assert.equal(sql(fixture, "SELECT count(*) FROM information_schema.tables WHERE table_schema='public' AND table_name IN ('users','articles','_articles_v','media','site_settings')"), '5')
   run()
