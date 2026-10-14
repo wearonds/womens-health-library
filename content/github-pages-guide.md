@@ -49,6 +49,8 @@ Repository สาธารณะทำให้คนอื่นอ่านไ
 3. รัน workflow `Static website` แบบ manual ค่า `publish` เริ่มต้นเป็น false เพื่อ build artifact อย่างเดียว
 4. การเลือก `publish=true` จึงเรียก job deploy ไม่ deploy อัตโนมัติจาก push
 
+เพื่อยึดแผน hosting ฟรี workflow จะทำงานเฉพาะ repository สาธารณะ
+
 Workflow อ่านเฉพาะ snapshot สาธารณะที่บันทึกใน repository ไม่เชื่อมฐานข้อมูล ไม่ต้องเพิ่ม secrets ของ CMS ใน GitHub และไม่ส่งออก preview ยังไม่ได้รัน workflow นี้บน GitHub
 
 ## แก้ไขหรือถอนบทความ

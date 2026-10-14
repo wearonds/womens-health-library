@@ -10,6 +10,7 @@ permissions:
   contents: read
 jobs:
   build:
+    if: github.event.repository.private == false
     runs-on: ubuntu-latest
     env:
       STATIC_BASE_PATH: /${{ github.event.repository.name }}
