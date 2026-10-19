@@ -1,4 +1,5 @@
 import './styles.css'
+import './recovery.css'
 import { siteSettings } from '@/lib/site'
 import { SiteFrame } from '@/components/SiteFrame'
 export const dynamic = 'force-dynamic'
