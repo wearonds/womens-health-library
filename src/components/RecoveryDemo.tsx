@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { abdominalHysterectomyTopics as topics } from '@/content/abdominal-hysterectomy'
 
 function Icon({ name, className = '' }: { name: 'heart' | 'check' | 'care' | 'calendar' | 'alert' | 'arrow'; className?: string }) {
   const paths: Record<typeof name, ReactNode> = {
@@ -12,24 +13,13 @@ function Icon({ name, className = '' }: { name: 'heart' | 'check' | 'care' | 'ca
   return <svg className={`recovery-icon ${className}`} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>
 }
 
-const topics = [
-  { title: 'อาหารและการดื่มน้ำ', subtitle: 'กินให้หลากหลาย · ลดโอกาสท้องผูก', icon: 'heart' as const, body: 'รับประทานอาหารให้หลากหลาย เพิ่มผัก ผลไม้ และอาหารที่มีกากใย พร้อมดื่มน้ำตามที่ทีมรักษาอนุญาต เพื่อช่วยให้ขับถ่ายสะดวก', detail: 'หากมีโรคประจำตัวที่ต้องจำกัดน้ำ หรือได้รับการผ่าตัดลำไส้ร่วมด้วย ให้ยึดคำแนะนำเฉพาะตอนกลับบ้าน' },
-  { title: 'การอาบน้ำ', subtitle: 'ดูชนิดแผลและผ้าปิดแผลก่อน', icon: 'care' as const, body: 'ทำตามคำแนะนำตอนกลับบ้านเรื่องการอาบน้ำและการรักษาแผลให้แห้ง เพราะแผลหน้าท้อง แผลส่องกล้อง และการผ่าตัดทางช่องคลอดมีวิธีดูแลต่างกัน', detail: 'อย่าแช่น้ำหรือว่ายน้ำจนกว่าแผลจะหายและทีมรักษาอนุญาต หากไม่ทราบว่าผ้าปิดแผลกันน้ำได้หรือไม่ ให้สอบถามก่อน' },
-  { title: 'การดูแลแผล', subtitle: 'แผลหน้าท้อง · แผลส่องกล้อง · แผลภายใน', icon: 'care' as const, body: 'หากมีแผลที่หน้าท้อง ให้ดูแลผ้าปิดแผลและทำแผลตามที่ทีมรักษาสอน สังเกตอาการบวม แดง ปวดมากขึ้น หรือมีหนอง และมาตัดไหมตามนัดหากเป็นไหมที่ต้องเอาออก', detail: 'แม้ไม่มีแผลหน้าท้อง หรือแผลภายนอกดูเล็ก ยังมีเนื้อเยื่อภายในที่ต้องใช้เวลาฟื้นตัว จึงควรทำตามข้อจำกัดกิจกรรมที่ได้รับ' },
-  { title: 'การกินยาและบรรเทาปวด', subtitle: 'ใช้ยาตามฉลาก · ไม่ปรับยาเอง', icon: 'heart' as const, body: 'ใช้ยาตามรายการยากลับบ้าน หากมีอาการปวดมากขึ้นหรือใช้ยาตามคำสั่งแล้วยังไม่ดีขึ้น ให้ติดต่อทีมรักษา ไม่เพิ่มขนาดยาหรือซื้อยาซ้ำเองโดยไม่ตรวจสอบ', detail: 'หากได้รับยาป้องกันลิ่มเลือดหรือถุงน่องทางการแพทย์ ให้ใช้ตามระยะเวลาที่สั่ง ยาที่ทำให้ง่วงอาจกระทบการขับรถและการใช้เครื่องจักร' },
-  { title: 'การเคลื่อนไหวและพักผ่อน', subtitle: 'เดินเบา ๆ · สลับพัก · เลี่ยงยกของหนัก', icon: 'check' as const, body: 'เดินระยะสั้นตามที่ทีมรักษาอนุญาต แล้วค่อย ๆ เพิ่มกิจกรรม สลับกับการพัก ไม่ควรนอนนิ่งตลอดวัน และอย่าฝืนเมื่อเหนื่อยหรือเจ็บ', detail: 'หลีกเลี่ยงยกของหนักและออกแรงมากระหว่างพักฟื้น การกลับไปทำงาน ออกกำลังกาย และขับรถให้ประเมินกับทีมรักษาตามวิธีผ่าตัดและลักษณะงานของคุณ' },
-  { title: 'การขับถ่าย', subtitle: 'ป้องกันท้องผูก · สังเกตปัสสาวะ', icon: 'care' as const, body: 'ช่วงแรกอาจท้องผูกได้ การกินกากใย ดื่มน้ำตามที่อนุญาต และเดินเบา ๆ ช่วยได้ หากได้รับยาช่วยระบายให้ใช้ตามคำสั่งเพื่อหลีกเลี่ยงการเบ่งมาก', detail: 'หากปัสสาวะไม่ออก แสบขัด หรือมีไข้ ควรติดต่อทีมรักษา ถ้าท้องปวดมากขึ้นร่วมกับอาเจียนหรือท้องอืดมาก ไม่ควรรอถึงวันนัด' },
-  { title: 'เลือดออกทางช่องคลอดและเพศสัมพันธ์', subtitle: 'แยกอาการที่พบได้จากสัญญาณเตือน', icon: 'heart' as const, body: 'อาจมีเลือดหรือตกขาวปริมาณเล็กน้อยหลังผ่าตัด แต่ถ้าเลือดออกมาก มีลิ่มเลือด หรือมีกลิ่นเหม็น ควรติดต่อทีมรักษาโดยไม่รอวันนัด', detail: 'งดการสอดใส่ทางช่องคลอดระหว่างที่แผลยังไม่หาย และรอคำแนะนำหรือการประเมินจากทีมรักษาก่อนกลับมามีเพศสัมพันธ์' },
-  { title: 'การมาตามนัด', subtitle: 'ดูใบนัด · เตรียมรายการยาและคำถาม', icon: 'calendar' as const, body: 'ดูวัน เวลา และสถานที่จากใบนัดของคุณ เตรียมรายการยาที่ใช้อยู่ และจดอาการหรือคำถามที่จะปรึกษา เช่น ผลชิ้นเนื้อ การดูแลแผล และการกลับไปทำกิจกรรม', detail: 'หากตัดรังไข่ร่วมด้วย หรือมีอารมณ์เศร้าและกังวลต่อเนื่อง ให้แจ้งทีมรักษาเพื่อวางแผนดูแลเพิ่มเติม หากมาตามนัดไม่ได้ ให้ติดต่อโรงพยาบาล' },
-]
-
 export function RecoveryDemo() {
   return <div className="recovery-demo">
     <aside className="recovery-draft"><span className="recovery-dot" />ต้นแบบสำหรับดูรูปแบบ<span>ยังไม่ใช่คำแนะนำสำหรับผู้ป่วย</span></aside>
     <section className="recovery-heading" aria-labelledby="recovery-title">
       <span className="recovery-kicker">คู่มือสำหรับอ่านเมื่อกลับบ้าน</span>
-      <h1 id="recovery-title">คู่มือดูแลตัวเอง<br />หลังผ่าตัดมดลูก</h1>
-      <p>ฉบับร่างสำหรับการตัดมดลูกออก (hysterectomy)</p>
+      <h1 id="recovery-title">คู่มือหลังผ่าตัดมดลูก<br />ผ่านหน้าท้อง</h1>
+      <p>ฉบับร่าง · การตัดมดลูกออกทางแผลหน้าท้อง</p>
     </section>
 
     <nav className="recovery-outline" aria-labelledby="outline-title">
@@ -41,19 +31,23 @@ export function RecoveryDemo() {
         <li><a href="#recovery-help"><span className="recovery-outline-number">03</span><strong>ช่องทางติดต่อทีมรักษา</strong><Icon name="arrow" /></a></li>
       </ol>
     </nav>
-    <p className="recovery-scope">คู่มือนี้ไม่ครอบคลุมการเลาะก้อนเนื้องอกโดยเก็บมดลูกไว้ การฟื้นตัวต่างกันตามวิธีผ่าตัดและการผ่าตัดร่วมอื่น ๆ ให้ยึดคำสั่งกลับบ้านของคุณเป็นหลัก</p>
+    <p className="recovery-scope">สำหรับการตัดมดลูกออกผ่านหน้าท้อง (abdominal hysterectomy) ไม่ใช่การเลาะก้อนเนื้องอกโดยเก็บมดลูกไว้ หากมีการผ่าตัดอื่นร่วมด้วย หรือคำแนะนำเฉพาะต่างจากหน้านี้ ให้ยึดคำสั่งกลับบ้านของทีมรักษา</p>
 
     <section className="recovery-section" aria-labelledby="care-title" id="recovery-care">
       <div className="recovery-section-label">01 / การดูแลตัวเอง</div>
-      <h2 id="care-title">เลือกอ่านทีละเรื่อง</h2><p className="recovery-subtitle">กดหัวข้อเพื่อดูคำแนะนำที่ต้องการทบทวน</p>
-      <div className="recovery-topic-list">{topics.map(topic => <details className="recovery-topic" key={topic.title}><summary><span className="recovery-topic-icon"><Icon name={topic.icon} /></span><span><strong>{topic.title}</strong><small>{topic.subtitle}</small></span><span className="recovery-expand" aria-hidden="true">+</span></summary><div className="recovery-topic-body"><span className="recovery-placeholder-label">ร่างคำแนะนำทั่วไป · รอทีมรักษาตรวจทาน</span><p>{topic.body}</p><p className="recovery-topic-detail">{topic.detail}</p></div></details>)}</div>
-    <aside className="recovery-source-note"><strong>ที่มาของร่างเนื้อหา</strong><p>ใช้ข้อมูล <a href="https://www.nhs.uk/conditions/hysterectomy/recovery/">NHS: การฟื้นตัวหลังตัดมดลูก</a> และคำแนะนำหลังผ่าตัดทั่วไปเป็นฐาน ขณะนี้ยังตรวจต้นฉบับ ACOG, RTCOG และ RCOG ไม่ได้ จึงยังไม่อ้างว่าร่างนี้ผ่านการตรวจตามแหล่งเหล่านั้น</p></aside>
+      <h2 id="care-title">เลือกอ่านทีละเรื่อง</h2><p className="recovery-subtitle">กดแต่ละเรื่อง แล้วอ่านตาม 3 หัวข้อ: ทำได้ · ควรเลี่ยง · ต้องพบแพทย์</p>
+      <div className="recovery-topic-list">{topics.map(topic => <details className="recovery-topic" key={topic.title}><summary><span className="recovery-topic-icon"><Icon name={topic.icon} /></span><span><strong>{topic.title}</strong><small>{topic.subtitle}</small></span><span className="recovery-expand" aria-hidden="true">+</span></summary><div className="recovery-topic-body">{([
+        { key: 'do', label: 'ทำได้', items: topic.do },
+        { key: 'avoid', label: 'ควรเลี่ยง', items: topic.avoid },
+        { key: 'seek', label: 'ต้องพบแพทย์', items: topic.seek },
+      ]).map(group => <section className={`recovery-action recovery-action-${group.key}`} key={group.key}><h3>{group.label}</h3><ul>{group.items.map(item => <li key={item}>{item}</li>)}</ul></section>)}</div></details>)}</div>
+    <aside className="recovery-source-note"><strong>ที่มาของร่างเนื้อหา</strong><p>เรียบเรียงจาก NHS: <a href="https://www.nhs.uk/conditions/hysterectomy/recovery/">การฟื้นตัวหลังตัดมดลูก</a>, <a href="https://www.nhs.uk/tests-and-treatments/having-surgery/recovery/">การดูแลหลังผ่าตัด</a>, <a href="https://www.nhs.uk/tests-and-treatments/hysterectomy/risks/">ภาวะแทรกซ้อน</a> และ <a href="https://www.nhs.uk/conditions/anaphylaxis/">อาการแพ้รุนแรง</a> ยังไม่ได้รับการตรวจทานโดยทีมรักษา และยังตรวจต้นฉบับ ACOG, RTCOG และ RCOG ไม่ได้</p></aside>
     </section>
 
     <section className="recovery-section" id="recovery-warning" aria-labelledby="warning-title">
       <div className="recovery-section-label">02 / สังเกตอาการระหว่างพักฟื้น</div>
       <h2 id="warning-title">สัญญาณเตือนที่ควรมาก่อนนัด</h2>
-      <div className="recovery-help-card"><Icon name="alert" /><div><h3>มีอาการผิดปกติ ไม่ต้องรอวันนัด</h3><ul className="recovery-warning-list"><li>แผลบวม แดง หรือปวดมากขึ้น มีหนอง หรือมีไข้ร่วมกับรู้สึกไม่สบาย</li><li>เลือดออกทางช่องคลอดมาก มีลิ่มเลือด หรือตกขาวมีกลิ่นเหม็น</li><li>ปวดท้องมากขึ้นร่วมกับอาเจียน ปัสสาวะไม่ออก หรือมีไข้ร่วมกับปัสสาวะแสบขัด</li><li>ขาข้างใดข้างหนึ่งบวม ปวด ร้อน หรือสีผิวเปลี่ยนไป ซึ่งอาจเป็นอาการของลิ่มเลือด</li></ul><div className="recovery-emergency"><strong>ขอความช่วยเหลือฉุกเฉินทันที</strong><p>หากหายใจลำบาก เจ็บหน้าอก หมดสติ หรือเลือดออกมากไม่หยุด</p></div><span className="recovery-placeholder-label">ร่างรายการอาการเตือน · ต้องตรวจทานตามวิธีผ่าตัด</span></div></div>
+      <div className="recovery-help-card"><Icon name="alert" /><div><h3>มีอาการผิดปกติ ไม่ต้องรอวันนัด</h3><ul className="recovery-warning-list"><li>แผลบวม แดง หรือปวดมากขึ้น มีหนอง หรือมีไข้ร่วมกับรู้สึกไม่สบาย</li><li>เลือดออกทางช่องคลอดมาก มีลิ่มเลือด หรือตกขาวมีกลิ่นเหม็น</li><li>ปวดท้องมากขึ้นร่วมกับอาเจียน ปัสสาวะไม่ออก หรือมีไข้ร่วมกับปัสสาวะแสบขัด</li><li>ขาข้างใดข้างหนึ่งบวม ปวด ร้อน หรือสีผิวเปลี่ยนไป ซึ่งอาจเป็นอาการของลิ่มเลือด</li></ul><div className="recovery-emergency"><strong>ขอความช่วยเหลือฉุกเฉินทันที</strong><p>หากหายใจลำบาก เจ็บหน้าอก หมดสติ หรือเลือดออกมากไม่หยุด</p></div><span className="recovery-placeholder-label">ร่างรายการอาการเตือน · รอทีมรักษาตรวจทาน</span></div></div>
     </section>
 
     <section className="recovery-section recovery-contact" id="recovery-help" aria-labelledby="help-title">

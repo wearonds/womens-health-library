@@ -82,3 +82,14 @@
   .recovery-topic-body { display: block; content-visibility: visible; }
   .recovery-section, .recovery-topic { break-inside: avoid; }
 }
+
+/* A repeated reading pattern keeps each care topic easy to scan. */
+.recovery-action { margin-top: 16px; padding: 0 0 0 12px; border-left: 3px solid var(--accent); }
+.recovery-demo .recovery-action h3 { font-size: 15px; margin: 0 0 6px; color: var(--accent); }
+.recovery-action ul { margin: 0; padding-left: 18px; }
+.recovery-action li { margin: 0 0 10px; }
+.recovery-action-avoid { border-color: #b9822f; }
+.recovery-demo .recovery-action-avoid h3 { color: #805517; }
+.recovery-action-seek { border-color: #b94934; }
+.recovery-demo .recovery-action-seek h3 { color: #a12823; }
+@media (max-width: 400px) { .recovery-topic-body { padding-left: 0; } }

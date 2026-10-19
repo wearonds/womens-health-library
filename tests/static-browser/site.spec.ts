@@ -66,7 +66,7 @@ test('recovery prototype works without JavaScript, keeps draft status and handle
     await page.goto(release + '/')
     await page.getByRole('link', { name: /ลองดูคู่มือหลังผ่าตัด/ }).click()
     await expect(page).toHaveURL(release + '/recovery-demo/')
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('หลังผ่าตัดมดลูก')
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('ผ่านหน้าท้อง')
     expect((await page.locator('.recovery-heading').boundingBox())!.height).toBeLessThan(180)
     const outline = page.getByRole('navigation', { name: 'ในหน้านี้ อ่านอะไรบ้าง?' })
     await expect(outline.getByRole('link')).toHaveCount(3)
@@ -84,6 +84,11 @@ test('recovery prototype works without JavaScript, keeps draft status and handle
       await topic.locator('summary').click()
       await expect(topic).toHaveAttribute('open', '')
       await expect(topic.locator('.recovery-topic-body')).toBeVisible()
+      await expect(topic.locator('.recovery-action h3')).toHaveText(['ทำได้', 'ควรเลี่ยง', 'ต้องพบแพทย์'])
+      for (const group of ['do', 'avoid', 'seek']) {
+        expect(await topic.locator(`.recovery-action-${group} li`).count()).toBeGreaterThan(0)
+      }
+      if (title === 'อาหารและการดื่มน้ำ') await topic.screenshot({ path: '.local/abdominal-hysterectomy-food-mobile.png' })
     }
     const sections = await page.locator('.recovery-demo > section').evaluateAll(elements => elements.map(el => el.id))
     expect(sections).toEqual(['', 'recovery-care', 'recovery-warning', 'recovery-help'])
@@ -91,6 +96,9 @@ test('recovery prototype works without JavaScript, keeps draft status and handle
     await page.keyboard.press('Enter')
     await expect(page.locator('details').first()).not.toHaveAttribute('open', '')
     await expect(page.getByRole('checkbox')).toHaveCount(0)
+    await expect(page.locator('.recovery-emergency')).toContainText('หายใจลำบาก')
+    await expect(page.locator('.recovery-emergency')).toContainText('เลือดออกมากไม่หยุด')
+    await expect(page.locator('.recovery-source-note')).toContainText('ยังไม่ได้รับการตรวจทานโดยทีมรักษา')
     await expect(page.locator('a[href="#recovery-checklist"]')).toHaveCount(0)
     await page.getByRole('navigation', { name: 'เมนูคู่มือหลังผ่าตัด' }).getByRole('link', { name: 'ติดต่อ', exact: true }).click()
     await expect(page).toHaveURL(/#recovery-help$/)

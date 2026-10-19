@@ -61,7 +61,7 @@ try {
   }
   await page('/', 'อ่านทบทวนหลังพบแพทย์', snapshot.site.introduction, <HomeView settings={snapshot.site} articles={snapshot.articles} />)
   await page('/about', 'เกี่ยวกับเว็บไซต์', snapshot.site.purpose ?? '', <AboutView settings={snapshot.site} />)
-  await page('/recovery-demo', 'ต้นแบบคู่มือหลังผ่าตัดมดลูก', 'ตัวอย่างคู่มือหลังผ่าตัดมดลูกสำหรับมือถือ ยังไม่ใช่คำแนะนำสำหรับผู้ป่วย', <RecoveryDemo />, true)
+  await page('/recovery-demo', 'ต้นแบบคู่มือหลังตัดมดลูกผ่านหน้าท้อง', 'ร่างคู่มือหลังตัดมดลูกผ่านหน้าท้องสำหรับมือถือ ยังไม่ใช่คำแนะนำสำหรับผู้ป่วย', <RecoveryDemo />, true)
   for (const article of snapshot.articles) await page(`/articles/${article.slug}`, article.title, article.description, <ArticleView article={article} />)
   const notFound = '<!doctype html>' + renderToStaticMarkup(<html lang="th"><head><meta charSet="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="robots" content="noindex, nofollow" /><title>{`ไม่พบหน้า | ${snapshot.site.name}`}</title><link rel="stylesheet" href={`${basePath}/assets/styles.css`} /></head><body><main className="wrap"><h1>ไม่พบหน้าที่ต้องการ</h1><p>บทความอาจยังไม่เผยแพร่หรือถูกถอนแล้ว</p><a className="button" href={`${basePath}/`}>กลับหน้าแรก</a></main></body></html>)
   await writeFile(path.join(staging, '404.html'), notFound)
