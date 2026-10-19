@@ -13,59 +13,54 @@ function Icon({ name, className = '' }: { name: 'heart' | 'check' | 'care' | 'ca
 }
 
 const topics = [
-  { title: 'ดูแลแผล', subtitle: 'ทำความสะอาด · อาบน้ำ · สังเกตแผล', icon: 'care' as const, body: 'ส่วนนี้จะเป็นคำแนะนำการดูแลแผล พร้อมภาพประกอบและข้อควรระวังที่ตรงกับชนิดการผ่าตัดของคุณ' },
-  { title: 'ยาและการบรรเทาปวด', subtitle: 'ทบทวนวิธีใช้ยาจากทีมรักษา', icon: 'heart' as const, body: 'ส่วนนี้จะอธิบายวิธีอ่านฉลากยา สิ่งที่ควรสอบถาม และช่องทางติดต่อเมื่อมีปัญหาเรื่องยา โดยไม่แสดงข้อมูลยาส่วนบุคคลบนหน้าสาธารณะ' },
-  { title: 'อาหารและการเคลื่อนไหว', subtitle: 'ค่อย ๆ กลับสู่กิจวัตรประจำวัน', icon: 'check' as const, body: 'ส่วนนี้จะระบุกิจกรรม อาหาร และข้อจำกัดที่ทีมรักษาตรวจทานแล้วสำหรับการผ่าตัดนี้' },
-]
-const stages = [
-  { id: 'home', title: 'กลับถึงบ้าน', heading: 'เริ่มต้นอย่างอุ่นใจ', description: 'พื้นที่สำหรับสรุปสิ่งที่ควรทบทวนเมื่อกลับบ้าน เช่น เอกสารกลับบ้าน รายการยา และช่องทางติดต่อทีมรักษา' },
-  { id: 'rest', title: 'พักฟื้นที่บ้าน', heading: 'ดูแลตัวเองทีละวัน', description: 'พื้นที่สำหรับคำแนะนำระหว่างพักฟื้น โดยปรับกิจกรรมและข้อจำกัดให้ตรงกับชนิดการผ่าตัด' },
-  { id: 'visit', title: 'เตรียมวันนัด', heading: 'พร้อมสำหรับการติดตาม', description: 'พื้นที่สำหรับเตือนเรื่องใบนัด สิ่งที่ควรเตรียม และคำถามที่อยากปรึกษาทีมรักษา' },
+  { title: 'อาหารและการดื่มน้ำ', subtitle: 'กินอะไรได้บ้าง · ข้อจำกัดที่ต้องรู้', icon: 'heart' as const, body: 'รับประทานอาหารและดื่มน้ำตามคำแนะนำตอนกลับบ้าน หากมีข้อจำกัดเรื่องอาหารหรือน้ำ ให้ยึดคำแนะนำเฉพาะของคุณ', detail: 'ส่วนที่จะเติม: อาหารที่เหมาะกับการผ่าตัดนี้ และข้อจำกัดจากโรคประจำตัว' },
+  { title: 'การอาบน้ำ', subtitle: 'อาบอย่างไร · ระวังแผลเปียก', icon: 'care' as const, body: 'ทำตามคำแนะนำของทีมรักษาเรื่องการอาบน้ำและการรักษาแผลให้แห้ง วิธีอาบน้ำขึ้นกับลักษณะแผล ผ้าปิดแผล และอุปกรณ์ที่ติดอยู่', detail: 'ส่วนที่จะเติม: เริ่มอาบน้ำได้เมื่อไร วิธีป้องกันแผล และข้อจำกัดเรื่องการแช่น้ำ' },
+  { title: 'การดูแลแผล', subtitle: 'ผ้าปิดแผล · ทำแผล · สังเกตความเปลี่ยนแปลง', icon: 'care' as const, body: 'ดูแลแผลตามวิธีที่ทีมรักษาสอน และสังเกตว่ามีอาการบวม ปวด หรือสีผิวบริเวณแผลเปลี่ยนไปมากขึ้นหรือไม่', detail: 'ส่วนที่จะเติม: วิธีและความถี่ในการทำแผล การตัดไหม และการดูแลสายระบายถ้ามี' },
+  { title: 'การกินยาและบรรเทาปวด', subtitle: 'ใช้ยาตามฉลาก · ทบทวนคำสั่งกลับบ้าน', icon: 'heart' as const, body: 'ใช้ยาตามฉลากและคำสั่งตอนกลับบ้าน หากไม่แน่ใจวิธีใช้หรือมีปัญหาหลังใช้ยา ให้สอบถามทีมรักษาหรือเภสัชกรก่อนปรับยา', detail: 'ส่วนที่จะเติม: ข้อควรระวังเรื่องยา และสิ่งที่ต้องทำเมื่อบรรเทาปวดได้ไม่เพียงพอ โดยไม่ใส่รายการยาส่วนบุคคลในหน้าสาธารณะ' },
+  { title: 'การเคลื่อนไหวและพักผ่อน', subtitle: 'ลุกเดิน · ออกแรง · กลับสู่กิจวัตร', icon: 'check' as const, body: 'เริ่มเคลื่อนไหวตามที่ทีมรักษาอนุญาต ค่อย ๆ เพิ่มกิจกรรมตามคำแนะนำและการฟื้นตัว หากไม่แน่ใจว่าทำอะไรได้บ้าง ให้สอบถามก่อน', detail: 'ส่วนที่จะเติม: การยกของ ออกกำลังกาย ขับรถ กลับไปทำงาน และมีเพศสัมพันธ์ ตามชนิดการผ่าตัด' },
+  { title: 'การขับถ่าย', subtitle: 'ปัสสาวะ · อุจจาระ · สิ่งที่ควรสังเกต', icon: 'care' as const, body: 'หัวข้อนี้จะอธิบายการสังเกตปัสสาวะและอุจจาระระหว่างพักฟื้น รวมถึงปัญหาที่ควรแจ้งทีมรักษา โดยปรับให้ตรงกับการผ่าตัด', detail: 'ส่วนที่จะเติม: คำแนะนำเรื่องท้องผูก ปัสสาวะลำบาก และสายสวนปัสสาวะถ้ามี' },
+  { title: 'การมาตามนัด', subtitle: 'เตรียมอะไร · ดูวันนัดจากที่ไหน', icon: 'calendar' as const, body: 'ดูวัน เวลา และสถานที่จากใบนัดของคุณ เตรียมรายการยาที่ใช้อยู่และจดคำถามที่ต้องการปรึกษา หากมาตามนัดไม่ได้ ให้ติดต่อโรงพยาบาล', detail: 'ส่วนที่จะเติม: สิ่งที่ต้องนำมา และการเตรียมตัวเฉพาะสำหรับการติดตามครั้งนี้' },
 ]
 
 export function RecoveryDemo() {
   return <div className="recovery-demo">
     <aside className="recovery-draft"><span className="recovery-dot" />ต้นแบบสำหรับดูรูปแบบ<span>ยังไม่ใช่คำแนะนำสำหรับผู้ป่วย</span></aside>
     <section className="recovery-hero" aria-labelledby="recovery-title">
-      <div className="recovery-eyebrow">YOUR RECOVERY COMPANION</div>
+
       <div className="recovery-hero-art" aria-hidden="true"><Icon name="heart" /><span className="recovery-art-plus">+</span><span className="recovery-art-dot" /></div>
-      <span className="recovery-kicker">คู่มือดูแลตัวเองหลังผ่าตัด</span>
-      <h1 id="recovery-title">กลับบ้านแล้ว<br />เรายังดูแลคุณอยู่</h1>
+      <span className="recovery-kicker">อ่านทบทวนเมื่อกลับบ้าน</span>
+      <h1 id="recovery-title">คู่มือดูแลตัวเอง<br />หลังผ่าตัด</h1>
       <p>ค่อย ๆ ฟื้นตัวในจังหวะของคุณ<br />เปิดอ่าน ทบทวน และดูแลตัวเองทีละวัน</p>
-      <a className="recovery-primary" href="#recovery-today">เริ่มดูแลตัวเองวันนี้ <Icon name="arrow" /></a>
+      <a className="recovery-primary" href="#recovery-care">เลือกเรื่องที่อยากอ่าน <Icon name="arrow" /></a>
       <div className="recovery-hero-foot"><span>อ่านง่ายบนมือถือ</span><span>กลับมาเปิดดูได้เสมอ</span></div>
     </section>
 
-    <a className="recovery-alert" href="#recovery-help"><span className="recovery-alert-icon"><Icon name="alert" /></span><span><strong>เมื่อไรควรติดต่อโรงพยาบาล?</strong><small>ดูตำแหน่งอาการเตือนและช่องทางติดต่อ</small></span><Icon name="arrow" /></a>
-
-    <section className="recovery-section" id="recovery-today" aria-labelledby="stage-title">
-      <div className="recovery-section-label">01 / ช่วงพักฟื้นของคุณ</div>
-      <h2 id="stage-title">วันนี้อยู่ในช่วงไหน?</h2>
-      <p className="recovery-subtitle">ลองเลือกช่วง เพื่อดูรูปแบบคำแนะนำ</p>
-      <div className="recovery-stages">
-        {stages.map((stage, i) => <input className="recovery-stage-input" type="radio" name="recovery-stage" id={`stage-${stage.id}`} key={stage.id} defaultChecked={i === 0} aria-controls={`stage-panel-${stage.id}`} />)}
-        <div className="recovery-stage-options">{stages.map((stage, i) => <label key={stage.id} htmlFor={`stage-${stage.id}`}><span>0{i + 1}</span>{stage.title}</label>)}</div>
-        {stages.map(stage => <div className={`recovery-stage-panel stage-panel-${stage.id}`} id={`stage-panel-${stage.id}`} key={stage.id}><span className="recovery-mini-icon"><Icon name="heart" /></span><div><h3>{stage.heading}</h3><p>{stage.description}</p></div></div>)}
-      </div>
-    </section>
-
     <section className="recovery-section" aria-labelledby="care-title" id="recovery-care">
-      <div className="recovery-section-label">02 / เปิดอ่านทีละเรื่อง</div>
-      <h2 id="care-title">เรื่องเล็ก ๆ ที่ช่วยให้ดูแลง่ายขึ้น</h2>
-      <div className="recovery-topic-list">{topics.map(topic => <details className="recovery-topic" key={topic.title}><summary><span className="recovery-topic-icon"><Icon name={topic.icon} /></span><span><strong>{topic.title}</strong><small>{topic.subtitle}</small></span><span className="recovery-expand" aria-hidden="true">+</span></summary><div className="recovery-topic-body"><span className="recovery-placeholder-label">พื้นที่ตัวอย่างเนื้อหา</span><p>{topic.body}</p></div></details>)}</div>
+      <div className="recovery-section-label">01 / การดูแลตัวเอง</div>
+      <h2 id="care-title">เลือกอ่านทีละเรื่อง</h2><p className="recovery-subtitle">กดหัวข้อเพื่อดูคำแนะนำที่ต้องการทบทวน</p>
+      <div className="recovery-topic-list">{topics.map(topic => <details className="recovery-topic" key={topic.title}><summary><span className="recovery-topic-icon"><Icon name={topic.icon} /></span><span><strong>{topic.title}</strong><small>{topic.subtitle}</small></span><span className="recovery-expand" aria-hidden="true">+</span></summary><div className="recovery-topic-body"><span className="recovery-placeholder-label">ร่างเนื้อหา · รอปรับตามการผ่าตัด</span><p>{topic.body}</p><p className="recovery-topic-detail">{topic.detail}</p></div></details>)}</div>
     </section>
 
     <section className="recovery-checklist recovery-section" id="recovery-checklist" aria-labelledby="checklist-title">
-      <div className="recovery-checklist-heading"><div><div className="recovery-section-label">03 / ทบทวนวันนี้</div><h2 id="checklist-title">ทีละข้อ ก็เพียงพอ</h2></div><Icon name="check" /></div>
+      <div className="recovery-checklist-heading"><div><div className="recovery-section-label">02 / ทบทวนวันนี้</div><h2 id="checklist-title">ทีละข้อ ก็เพียงพอ</h2></div><Icon name="check" /></div>
       <p>ลองติ๊กสิ่งที่ทบทวนแล้ว</p>
       <form><fieldset><legend className="recovery-sr-only">รายการทบทวนตัวอย่าง</legend>{['ทบทวนคำแนะนำตอนกลับบ้าน', 'ดูรายการยาที่ได้รับ', 'เตรียมคำถามสำหรับทีมรักษา', 'ตรวจวันนัดครั้งถัดไป'].map((item, i) => <label className="recovery-check-row" key={item}><input type="checkbox" name={`task-${i}`} /><span>{item}</span></label>)}</fieldset><div className="recovery-checklist-foot"><span>ใช้ช่วยจำ ไม่ใช้ประเมินอาการ</span><button type="reset">เริ่มใหม่</button></div></form>
       <p className="recovery-local-note">รายการไม่ส่งให้ทีมรักษาและไม่บันทึกข้ามการใช้งาน</p>
     </section>
 
-    <section className="recovery-section recovery-appointment" aria-labelledby="visit-title"><span className="recovery-topic-icon"><Icon name="calendar" /></span><div><h2 id="visit-title">อย่าลืมนัดครั้งถัดไป</h2><p>พื้นที่สำหรับคำแนะนำเตรียมตัวมาตามนัด<br />วันและเวลาจริงให้ดูจากใบนัดของคุณ</p><span className="recovery-placeholder-label">ยังไม่มีข้อมูลวันนัดส่วนบุคคล</span></div></section>
+    <section className="recovery-section" id="recovery-warning" aria-labelledby="warning-title">
+      <div className="recovery-section-label">03 / สังเกตอาการระหว่างพักฟื้น</div>
+      <h2 id="warning-title">สัญญาณเตือนที่ควรมาก่อนนัด</h2>
+      <div className="recovery-help-card"><Icon name="alert" /><div><h3>มีอาการผิดปกติ ไม่ต้องรอวันนัด</h3><ul className="recovery-warning-list"><li>แผลบวม แดง หรือปวดมากขึ้น มีหนอง หรือมีไข้ร่วมกับรู้สึกไม่สบาย</li><li>ขาข้างใดข้างหนึ่งบวม ปวด ร้อน หรือสีผิวเปลี่ยนไป ซึ่งอาจเป็นอาการของลิ่มเลือด</li></ul><div className="recovery-emergency"><strong>ขอความช่วยเหลือฉุกเฉินทันที</strong><p>หากหายใจลำบาก เจ็บหน้าอก หมดสติ หรือเลือดออกมากไม่หยุด</p></div><span className="recovery-placeholder-label">รายการยังไม่ครบ · ต้องเพิ่มอาการเตือนเฉพาะการผ่าตัด</span></div></div>
+    </section>
 
-    <section className="recovery-section" id="recovery-help" aria-labelledby="help-title"><div className="recovery-section-label">04 / เมื่อคุณต้องการความช่วยเหลือ</div><h2 id="help-title">มีข้อสงสัย ไม่ต้องเก็บไว้คนเดียว</h2><div className="recovery-help-card"><Icon name="alert" /><div><h3>อาการเตือนและช่องทางติดต่อ</h3><p>พื้นที่สำหรับอาการที่ต้องรีบพบแพทย์ หมายเลขโรงพยาบาล และเวลาให้บริการ จะเติมหลังทีมรักษาตรวจทานแล้ว</p><span className="recovery-placeholder-label">ต้นแบบนี้ยังไม่มีปุ่มโทรใช้งานจริง</span></div></div></section>
+    <section className="recovery-section recovery-contact" id="recovery-help" aria-labelledby="help-title">
+      <div className="recovery-section-label">04 / ช่องทางติดต่อ</div>
+      <h2 id="help-title">ติดต่อทีมรักษา</h2>
+      <p className="recovery-subtitle">เก็บช่องทางเหล่านี้ไว้ เผื่อต้องการสอบถาม</p>
+      <div className="recovery-contact-card"><div><strong>คลินิก / หอผู้ป่วย</strong><span>รอระบุชื่อหน่วยงานและหมายเลขโทรศัพท์</span></div><div><strong>เวลาที่ติดต่อได้</strong><span>รอระบุวันและเวลาให้บริการ</span></div><div><strong>นอกเวลาหรือกรณีฉุกเฉิน</strong><span>รอระบุช่องทางตามระบบของโรงพยาบาล</span></div><span className="recovery-placeholder-label">ต้นแบบนี้ยังไม่มีปุ่มโทรใช้งานจริง</span></div>
+    </section>
     <div className="recovery-end"><Icon name="heart" /><p>ดูแลตัวเองทีละนิด ในทุก ๆ วัน</p><small>ตัวอย่างการออกแบบ · ยังไม่ใช้แทนคำแนะนำจากทีมรักษา</small></div>
-    <nav className="recovery-bottom-nav" aria-label="เมนูคู่มือหลังผ่าตัด"><a href="#recovery-today"><Icon name="heart" /><span>ช่วงพักฟื้น</span></a><a href="#recovery-care"><Icon name="care" /><span>วิธีดูแล</span></a><a href="#recovery-checklist"><Icon name="check" /><span>เช็กลิสต์</span></a><a href="#recovery-help"><Icon name="alert" /><span>ติดต่อ</span></a></nav>
+    <nav className="recovery-bottom-nav" aria-label="เมนูคู่มือหลังผ่าตัด"><a href="#recovery-care"><Icon name="care" /><span>วิธีดูแล</span></a><a href="#recovery-checklist"><Icon name="check" /><span>เช็กลิสต์</span></a><a href="#recovery-warning"><Icon name="alert" /><span>สัญญาณเตือน</span></a><a href="#recovery-help"><Icon name="calendar" /><span>ติดต่อ</span></a></nav>
   </div>
 }
