@@ -47,7 +47,7 @@ try {
   async function page(route: string, title: string, description: string, children: ReactNode, noIndex = preview) {
     const canonical = siteURL ? new URL(routeURL(route), siteURL.origin).toString() : undefined
     const html = '<!doctype html>' + renderToStaticMarkup(
-      <html lang="th"><head><meta charSet="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="theme-color" content="#fff7f7" /><title>{`${title} | ${snapshot.site.name}`}</title><meta name="description" content={description} /><meta name="robots" content={noIndex ? 'noindex, nofollow' : 'index, follow'} /><link rel="stylesheet" href={`${basePath}/assets/styles.css`} />{canonical && !noIndex && <link rel="canonical" href={canonical} />}</head><body><SiteFrame settings={snapshot.site} preview={preview}>{children}</SiteFrame></body></html>
+      <html lang="th"><head><meta charSet="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><meta name="theme-color" content="#14324f" /><title>{`${title} | ${snapshot.site.name}`}</title><meta name="description" content={description} /><meta name="robots" content={noIndex ? 'noindex, nofollow' : 'index, follow'} /><link rel="stylesheet" href={`${basePath}/assets/styles.css`} />{canonical && !noIndex && <link rel="canonical" href={canonical} />}</head><body><SiteFrame settings={snapshot.site} preview={preview}>{children}</SiteFrame></body></html>
     )
     // Next Link becomes ordinary HTML. Resolve its root links for project Pages.
     const withPaths = html.replace(/(<a\b[^>]*\bhref=")\/(?!\/)([^"]*)(")/g, (_, prefix: string, link: string, suffix: string) => `${prefix}${routeURL('/' + link)}${suffix}`)
