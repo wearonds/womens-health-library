@@ -66,14 +66,19 @@ test('recovery prototype works without JavaScript, keeps draft status and handle
     await page.goto(release + '/')
     await page.getByRole('link', { name: /ลองดูคู่มือหลังผ่าตัด/ }).click()
     await expect(page).toHaveURL(release + '/recovery-demo/')
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('คู่มือดูแลตัวเอง')
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('หลังผ่าตัดมดลูก')
+    expect((await page.locator('.recovery-heading').boundingBox())!.height).toBeLessThan(180)
+    const outline = page.getByRole('navigation', { name: 'ในหน้านี้ อ่านอะไรบ้าง?' })
+    await expect(outline.getByRole('link')).toHaveCount(4)
+    await outline.getByRole('link', { name: /การดูแลตัวเอง 8 เรื่อง/ }).click()
+    await expect(page).toHaveURL(/#recovery-care$/)
     await expect(page.getByText('ยังไม่ใช่คำแนะนำสำหรับผู้ป่วย', { exact: true })).toBeVisible()
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow')
     await expect(page.locator('script')).toHaveCount(0)
     await expect(page.locator('a[href^="tel:"]')).toHaveCount(0)
     await expect(page.getByRole('radio')).toHaveCount(0)
     await expect(page.getByRole('heading', { name: 'วันนี้อยู่ในช่วงไหน?' })).toHaveCount(0)
-    const topicTitles = ['อาหารและการดื่มน้ำ', 'การอาบน้ำ', 'การดูแลแผล', 'การกินยาและบรรเทาปวด', 'การเคลื่อนไหวและพักผ่อน', 'การขับถ่าย', 'การมาตามนัด']
+    const topicTitles = ['อาหารและการดื่มน้ำ', 'การอาบน้ำ', 'การดูแลแผล', 'การกินยาและบรรเทาปวด', 'การเคลื่อนไหวและพักผ่อน', 'การขับถ่าย', 'เลือดออกทางช่องคลอดและเพศสัมพันธ์', 'การมาตามนัด']
     for (const title of topicTitles) {
       const topic = page.locator('details').filter({ has: page.locator('summary strong', { hasText: title }) })
       await topic.locator('summary').click()
