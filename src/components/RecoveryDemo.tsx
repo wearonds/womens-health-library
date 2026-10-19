@@ -37,9 +37,8 @@ export function RecoveryDemo() {
       <p>อ่านตามลำดับ หรือกดข้ามไปเรื่องที่ต้องการ</p>
       <ol>
         <li><a href="#recovery-care"><span className="recovery-outline-number">01</span><span><strong>การดูแลตัวเอง 8 เรื่อง</strong><small>อาหาร · อาบน้ำ · แผล · ยา · กิจกรรม · ขับถ่าย · เลือดออกและเพศสัมพันธ์ · นัดติดตาม</small></span><Icon name="arrow" /></a></li>
-        <li><a href="#recovery-checklist"><span className="recovery-outline-number">02</span><strong>เช็กลิสต์ช่วยทบทวน</strong><Icon name="arrow" /></a></li>
-        <li><a href="#recovery-warning"><span className="recovery-outline-number">03</span><strong>สัญญาณเตือนที่ควรมาก่อนนัด</strong><Icon name="arrow" /></a></li>
-        <li><a href="#recovery-help"><span className="recovery-outline-number">04</span><strong>ช่องทางติดต่อทีมรักษา</strong><Icon name="arrow" /></a></li>
+        <li><a href="#recovery-warning"><span className="recovery-outline-number">02</span><strong>สัญญาณเตือนที่ควรมาก่อนนัด</strong><Icon name="arrow" /></a></li>
+        <li><a href="#recovery-help"><span className="recovery-outline-number">03</span><strong>ช่องทางติดต่อทีมรักษา</strong><Icon name="arrow" /></a></li>
       </ol>
     </nav>
     <p className="recovery-scope">คู่มือนี้ไม่ครอบคลุมการเลาะก้อนเนื้องอกโดยเก็บมดลูกไว้ การฟื้นตัวต่างกันตามวิธีผ่าตัดและการผ่าตัดร่วมอื่น ๆ ให้ยึดคำสั่งกลับบ้านของคุณเป็นหลัก</p>
@@ -51,27 +50,20 @@ export function RecoveryDemo() {
     <aside className="recovery-source-note"><strong>ที่มาของร่างเนื้อหา</strong><p>ใช้ข้อมูล <a href="https://www.nhs.uk/conditions/hysterectomy/recovery/">NHS: การฟื้นตัวหลังตัดมดลูก</a> และคำแนะนำหลังผ่าตัดทั่วไปเป็นฐาน ขณะนี้ยังตรวจต้นฉบับ ACOG, RTCOG และ RCOG ไม่ได้ จึงยังไม่อ้างว่าร่างนี้ผ่านการตรวจตามแหล่งเหล่านั้น</p></aside>
     </section>
 
-    <section className="recovery-checklist recovery-section" id="recovery-checklist" aria-labelledby="checklist-title">
-      <div className="recovery-checklist-heading"><div><div className="recovery-section-label">02 / ทบทวนวันนี้</div><h2 id="checklist-title">ทีละข้อ ก็เพียงพอ</h2></div><Icon name="check" /></div>
-      <p>ลองติ๊กสิ่งที่ทบทวนแล้ว</p>
-      <form><fieldset><legend className="recovery-sr-only">รายการทบทวนตัวอย่าง</legend>{['ทบทวนคำแนะนำตอนกลับบ้าน', 'ดูรายการยาที่ได้รับ', 'เตรียมคำถามสำหรับทีมรักษา', 'ตรวจวันนัดครั้งถัดไป'].map((item, i) => <label className="recovery-check-row" key={item}><input type="checkbox" name={`task-${i}`} /><span>{item}</span></label>)}</fieldset><div className="recovery-checklist-foot"><span>ใช้ช่วยจำ ไม่ใช้ประเมินอาการ</span><button type="reset">เริ่มใหม่</button></div></form>
-      <p className="recovery-local-note">รายการไม่ส่งให้ทีมรักษาและไม่บันทึกข้ามการใช้งาน</p>
-    </section>
-
     <section className="recovery-section" id="recovery-warning" aria-labelledby="warning-title">
-      <div className="recovery-section-label">03 / สังเกตอาการระหว่างพักฟื้น</div>
+      <div className="recovery-section-label">02 / สังเกตอาการระหว่างพักฟื้น</div>
       <h2 id="warning-title">สัญญาณเตือนที่ควรมาก่อนนัด</h2>
       <div className="recovery-help-card"><Icon name="alert" /><div><h3>มีอาการผิดปกติ ไม่ต้องรอวันนัด</h3><ul className="recovery-warning-list"><li>แผลบวม แดง หรือปวดมากขึ้น มีหนอง หรือมีไข้ร่วมกับรู้สึกไม่สบาย</li><li>เลือดออกทางช่องคลอดมาก มีลิ่มเลือด หรือตกขาวมีกลิ่นเหม็น</li><li>ปวดท้องมากขึ้นร่วมกับอาเจียน ปัสสาวะไม่ออก หรือมีไข้ร่วมกับปัสสาวะแสบขัด</li><li>ขาข้างใดข้างหนึ่งบวม ปวด ร้อน หรือสีผิวเปลี่ยนไป ซึ่งอาจเป็นอาการของลิ่มเลือด</li></ul><div className="recovery-emergency"><strong>ขอความช่วยเหลือฉุกเฉินทันที</strong><p>หากหายใจลำบาก เจ็บหน้าอก หมดสติ หรือเลือดออกมากไม่หยุด</p></div><span className="recovery-placeholder-label">ร่างรายการอาการเตือน · ต้องตรวจทานตามวิธีผ่าตัด</span></div></div>
     </section>
 
     <section className="recovery-section recovery-contact" id="recovery-help" aria-labelledby="help-title">
-      <div className="recovery-section-label">04 / ช่องทางติดต่อ</div>
+      <div className="recovery-section-label">03 / ช่องทางติดต่อ</div>
       <h2 id="help-title">ติดต่อทีมรักษา</h2>
       <p className="recovery-subtitle">เก็บช่องทางเหล่านี้ไว้ เผื่อต้องการสอบถาม</p>
       <div className="recovery-contact-card"><div><strong>คลินิก / หอผู้ป่วย</strong><span>รอระบุชื่อหน่วยงานและหมายเลขโทรศัพท์</span></div><div><strong>เวลาที่ติดต่อได้</strong><span>รอระบุวันและเวลาให้บริการ</span></div><div><strong>นอกเวลาหรือกรณีฉุกเฉิน</strong><span>รอระบุช่องทางตามระบบของโรงพยาบาล</span></div><span className="recovery-placeholder-label">ต้นแบบนี้ยังไม่มีปุ่มโทรใช้งานจริง</span></div>
     </section>
 
     <div className="recovery-end"><Icon name="heart" /><p>ดูแลตัวเองทีละนิด ในทุก ๆ วัน</p><small>ตัวอย่างการออกแบบ · ยังไม่ใช้แทนคำแนะนำจากทีมรักษา</small></div>
-    <nav className="recovery-bottom-nav" aria-label="เมนูคู่มือหลังผ่าตัด"><a href="#recovery-care"><Icon name="care" /><span>วิธีดูแล</span></a><a href="#recovery-checklist"><Icon name="check" /><span>เช็กลิสต์</span></a><a href="#recovery-warning"><Icon name="alert" /><span>สัญญาณเตือน</span></a><a href="#recovery-help"><Icon name="calendar" /><span>ติดต่อ</span></a></nav>
+    <nav className="recovery-bottom-nav" aria-label="เมนูคู่มือหลังผ่าตัด"><a href="#recovery-care"><Icon name="care" /><span>วิธีดูแล</span></a><a href="#recovery-warning"><Icon name="alert" /><span>สัญญาณเตือน</span></a><a href="#recovery-help"><Icon name="calendar" /><span>ติดต่อ</span></a></nav>
   </div>
 }
