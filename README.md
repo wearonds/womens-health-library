@@ -1,5 +1,12 @@
 # Women's Health Library
 
+## Start here — Project Resume Standard v1.0
+
+- **Owner (สรุป 2 นาที):** [OWNER_OVERVIEW_TH.md](OWNER_OVERVIEW_TH.md)
+- **AI / Governance:** [AGENTS.md](AGENTS.md) → [HANDOFF.md](HANDOFF.md) → this README → current GitHub/CI and actual hosting state.
+- **คำสั่งเริ่มห้องใหม่:** "ต่อโปรเจกต์ Women's Health Library จาก GitHub"
+- **Important hosting discrepancy:** the repo documents a manual GitHub Pages publishing path, but Cloudflare Pages was observed on 2026-11-13 with **auto production deployment from GitHub `main` enabled**. Do not merge even documentation changes without explicit Owner approval for possible production publishing, or a separately authorized verified deploy decoupling. No Cloudflare settings were modified.
+
 เว็บไซต์ภาษาไทยสำหรับผู้ป่วยอ่านทบทวนหลังพบแพทย์ พัฒนาด้วย Next.js 16, Payload CMS 3 และ PostgreSQL 17
 
 ## แนวทาง hosting งบ 0 บาท
