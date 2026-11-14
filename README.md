@@ -1,5 +1,7 @@
 # Women's Health Library
 
+**รับงานต่อ:** [Owner Working Handoff (Google Doc)](https://docs.google.com/document/d/1EHL5ZcxmsLm4mpuFgp1pqjKu7howsjrXkg_0cLqbY04/edit?usp=drivesdk) สำหรับบันทึกเจ้าของและ checkpoint. ตรวจสถานะปัจจุบันจาก GitHub. หากเปิด Doc ไม่ได้ ให้ใช้ [คู่มือส่งต่องาน](content/technical-handoff.md).
+
 เว็บไซต์ภาษาไทยสำหรับผู้ป่วยอ่านทบทวนหลังพบแพทย์ พัฒนาด้วย Next.js 16, Payload CMS 3 และ PostgreSQL 17
 
 ## แนวทาง hosting งบ 0 บาท
