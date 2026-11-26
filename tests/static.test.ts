@@ -47,6 +47,8 @@ test('standalone project Pages build works without DB credentials and removes wi
     assert.match(home, /href="\/womens-health-library\/assets\/styles.css"/)
     const releaseManifest = JSON.parse(await readFile(`${output}/release-files.json`, 'utf8'))
     assert.equal(releaseManifest.mode, 'public')
+    // Stable fingerprint for cross-run comparison on separate clean CI runners.
+    console.log('RG02_ARTIFACT_SHA256=' + createHash('sha256').update(JSON.stringify(releaseManifest)).digest('hex'))
     assert.ok(releaseManifest.files.every((file: { path: string; sha256: string }) => /^[a-f0-9]{64}$/.test(file.sha256)))
     for (const file of releaseManifest.files as { path: string; sha256: string }[]) {
       assert.equal(createHash('sha256').update(await readFile(`${output}/${file.path}`)).digest('hex'), file.sha256)
