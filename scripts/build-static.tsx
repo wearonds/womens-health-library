@@ -1,5 +1,6 @@
 import { readFile, writeFile, mkdir, mkdtemp, access, rm, rename, readdir } from 'node:fs/promises'
 import { createHash } from 'node:crypto'
+import { execFileSync } from 'node:child_process'
 import path from 'node:path'
 import { parseArgs } from 'node:util'
 import { renderToStaticMarkup } from 'react-dom/server'
@@ -34,6 +35,13 @@ const excludedArticles = preview ? [] : importedSnapshot.articles.filter(article
 const snapshot: StaticSnapshot = preview ? importedSnapshot : { ...importedSnapshot, articles: importedSnapshot.articles.filter(article => article.reviewCategory === 'medical') }
 if (release && excludedArticles.length) throw new Error('Release blocked: snapshot contains editorial-only articles')
 if (release && (!siteURL || !/^[a-f0-9]{40}$/.test(process.env.RELEASE_SOURCE_SHA ?? ''))) throw new Error('Release requires HTTPS STATIC_SITE_URL and exact RELEASE_SOURCE_SHA')
+if (release && snapshot.articles.length === 0) throw new Error('Release blocked: no medically reviewed articles; withdrawal requires separate Owner approval')
+if (release) {
+  let checkedOutSha: string
+  try { checkedOutSha = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim() }
+  catch { throw new Error('Release blocked: cannot verify checked-out source SHA') }
+  if (checkedOutSha !== process.env.RELEASE_SOURCE_SHA) throw new Error('Release source SHA does not match checked-out commit')
+}
 validateSnapshot(snapshot, preview ? 'preview' : 'public')
 const generator = 'womens-health-library-static-v1'
 try {
