@@ -2,7 +2,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { writeFile, readFile, mkdir, rm, access } from 'node:fs/promises'
 import { spawnSync } from 'node:child_process'
-import { randomBytes } from 'node:crypto'
+import { randomBytes, createHash } from 'node:crypto'
 import { fingerprint } from '../src/lib/content-fingerprint'
 import { validateSnapshot } from '../src/static/snapshot'
 import type { StaticSnapshot, StaticArticle } from '../src/static/types'
@@ -48,6 +48,9 @@ test('standalone project Pages build works without DB credentials and removes wi
     const releaseManifest = JSON.parse(await readFile(`${output}/release-files.json`, 'utf8'))
     assert.equal(releaseManifest.mode, 'public')
     assert.ok(releaseManifest.files.every((file: { path: string; sha256: string }) => /^[a-f0-9]{64}$/.test(file.sha256)))
+    for (const file of releaseManifest.files as { path: string; sha256: string }[]) {
+      assert.equal(createHash('sha256').update(await readFile(`${output}/${file.path}`)).digest('hex'), file.sha256)
+    }
     assert.ok(releaseManifest.files.every((file: { path: string }) => !file.path.includes('recovery-demo') && !file.path.startsWith('content/')))
     assert.doesNotMatch(home, /recovery-demo/)
     await assert.rejects(() => access(`${output}/recovery-demo/index.html`))
@@ -81,8 +84,8 @@ test('explicit release requires medical-only snapshot, source SHA and canonical 
     await writeFile(input, JSON.stringify(fixture))
     const result = build(); assert.equal(result.status, 0, result.stderr)
     const html = await readFile(`${output}/index.html`, 'utf8')
-    assert.match(html, /href="\\/articles\\/test-article\\/"/)
-    assert.match(html, /href="\\/assets\\/styles.css"/)
+    assert.match(html, /href="\/articles\/test-article\/"/)
+    assert.match(html, /href="\/assets\/styles.css"/)
     const manifest = JSON.parse(await readFile(`${output}/release-files.json`, 'utf8'))
     assert.equal(manifest.sourceSha, 'a'.repeat(40))
     fixture.articles[0].reviewCategory = 'editorial'
