@@ -35,37 +35,29 @@ test('all four static preview pages work on mobile with JavaScript disabled', as
   } finally { await context.close() }
 })
 
-test('release excludes unapproved articles, CMS routes and credential files', async ({ request }) => {
+test('release excludes editorial articles, demo pages, CMS routes and images', async ({ request }) => {
   const home = await request.get(release + '/')
   expect(home.status()).toBe(200)
-  expect(await home.text()).toContain('เนื้องอกมดลูก')
-  for (const slug of ['uterine-fibroids', 'vaginal-discharge']) {
-    const response = await request.get(`${release}/articles/${slug}/`)
-    expect(response.status()).toBe(200)
-    expect(await response.text()).toContain('ยังไม่ได้ผ่านการตรวจทานทางการแพทย์')
-    expect(await response.text()).not.toContain('ตรวจทานทางการแพทย์โดย')
-  }
-  for (const route of ['/admin/', '/api/articles/', '/.env', '/.local/admin-login.txt', '/content/articles/vaginal-discharge.json']) expect((await request.get(release + route)).status()).toBe(404)
-  for (const slug of ['uterine-fibroids', 'vaginal-discharge']) {
-    const illustration = await request.get(`${release}/illustrations/${slug}.png`)
-    expect(illustration.status()).toBe(200)
-    expect(illustration.headers()['content-type']).toContain('image/png')
+  expect(await home.text()).not.toContain('ลองดูคู่มือหลังผ่าตัด')
+  expect(await home.text()).toContain('กำลังเตรียมบทความ')
+  for (const route of ['/articles/uterine-fibroids/', '/articles/vaginal-discharge/', '/recovery-demo/', '/admin/', '/api/articles/', '/.env', '/.local/admin-login.txt', '/content/articles/vaginal-discharge.json', '/illustrations/uterine-fibroids.png']) {
+    expect((await request.get(release + route)).status(), route).toBe(404)
   }
   const styles = await request.get(release + '/assets/styles.css')
   expect(styles.status()).toBe(200)
   expect(styles.headers()['content-type']).toContain('text/css')
   const sitemap = await request.get(release + '/sitemap.xml')
   expect(sitemap.status()).toBe(200)
-  expect(await sitemap.text()).toContain('uterine-fibroids')
+  expect(await sitemap.text()).not.toContain('uterine-fibroids')
 })
 
 test('recovery prototype works without JavaScript, keeps draft status and handles narrow screens', async ({ browser, request }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } })
   const page = await context.newPage()
   try {
-    await page.goto(release + '/')
+    await page.goto(preview + '/')
     await page.getByRole('link', { name: /ลองดูคู่มือหลังผ่าตัด/ }).click()
-    await expect(page).toHaveURL(release + '/recovery-demo/')
+    await expect(page).toHaveURL(preview + '/recovery-demo/')
     await expect(page.getByRole('heading', { level: 1 })).toContainText('ผ่านหน้าท้อง')
     expect((await page.locator('.recovery-heading').boundingBox())!.height).toBeLessThan(180)
     const outline = page.getByRole('navigation', { name: 'ในหน้านี้ อ่านอะไรบ้าง?' })
@@ -110,7 +102,7 @@ test('recovery prototype works without JavaScript, keeps draft status and handle
       expect(await nav.boundingBox().then(box => box!.height)).toBeGreaterThanOrEqual(48)
     }
     await page.setViewportSize({ width: 390, height: 844 })
-    await page.goto(release + '/recovery-demo/')
+    await page.goto(preview + '/recovery-demo/')
     await page.screenshot({ path: '.local/recovery-demo-mobile.png', fullPage: true })
     await page.setViewportSize({ width: 1280, height: 900 })
     await page.screenshot({ path: '.local/recovery-demo-desktop.png', fullPage: true })

@@ -15,7 +15,8 @@ try {
     // Trusted local export reads the approval fingerprint, but never exports users,
     // relationships, tokens, account data, or internal CMS fields.
     const result = await payload.find({ collection: 'articles', overrideAccess: true, draft: preview, depth: 0, page, limit: 100, where: preview ? undefined : { and: [{ _status: { equals: 'published' } }, { workflow: { equals: 'published' } }] }, sort: 'slug' })
-    snapshot.articles.push(...result.docs.map(snapshotArticle))
+    // An editorial publication is not physician approval. Keep such articles in the CMS only.
+    snapshot.articles.push(...result.docs.filter(article => preview || article.reviewCategory === 'medical').map(snapshotArticle))
     if (!result.hasNextPage) break
     page++
   }
