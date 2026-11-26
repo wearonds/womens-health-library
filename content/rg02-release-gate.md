@@ -16,7 +16,7 @@
 2. `scripts/build-static.tsx` additionally filters non-medical articles defensively. Public builds omit `/recovery-demo`, its home-page link, and illustration assets belonging only to excluded articles. Preview builds retain the demo for local review.
 3. Public snapshot validation requires medical review class, a matching approved content fingerprint, an identified reviewer, review date, summary, urgent advice, sections, and HTTPS references. The fingerprint detects later content drift but **does not authenticate a real physician**.
 4. The builder checks its exact emitted-file allowlist and writes a deterministic `release-files.json` containing the SHA-256 of each emitted file, the input snapshot SHA-256, and an optional source SHA.
-5. `--release` is fail-closed if the input contains editorial-only articles, lacks a valid 40-character `RELEASE_SOURCE_SHA`, or omits `STATIC_SITE_URL`. This option **does not** deploy.
+5. `--release` is fail-closed if the input contains editorial-only articles, no medically approved article, a missing/incorrect `RELEASE_SOURCE_SHA` (must match `git rev-parse HEAD`), or no `STATIC_SITE_URL`. This option **does not** deploy.
 6. Existing unit/static/browser checks were updated for the secure behavior. Root-domain path behavior is covered by a synthetic fixture.
 
 ## Release candidate (future authorization only)
@@ -44,9 +44,9 @@ Current checked-in `content/static-site.json` contains two **editorial-only** st
 
 - `npm run test:static`: medical vs editorial, draft, post-review modifications, missing urgent advice, unsafe links, absence of public demo, repeatable hashes, root-relative assets.
 - `npm run build:static`: safe static build from the current editorial baseline (zero medically approved articles). Never interpret this as medical approval or a release candidate.
-- `npm run test:static:browser` after preparing both preview and public outputs: mobile reading, image links for preview, draft/demo not public, 404 private paths.
+- `.github/workflows/checks.yml` now explicitly prepares static preview/public outputs (synthetic test data) and runs the existing `npm run test:static:browser` suite: mobile reading, image links for preview, draft/demo not public, 404 private paths.
 - Existing `npm run typecheck`, `npm test`, and `npm run build`: reuse the checks from `.github/workflows/checks.yml`. Scope CI results by exact tested SHA. Do not rerun unrelated tests without evidence drift.
-- With a synthetic clinical fixture only, verify `--release` fails if review data, source SHA, or input integrity is missing.
+- With a synthetic clinical fixture only, verify `--release` fails if review data, source SHA, canonical site URL, or input integrity is missing, or if the release would have no medically reviewed articles.
 - Real ultrasound or identifiable medical images are **not permitted** in QA.
 
 ## Known risks / unresolved gates
