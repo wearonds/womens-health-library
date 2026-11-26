@@ -54,8 +54,16 @@ test('standalone project Pages build works without DB credentials and removes wi
     assert.ok(releaseManifest.files.every((file: { path: string }) => !file.path.includes('recovery-demo') && !file.path.startsWith('content/')))
     assert.doesNotMatch(home, /recovery-demo/)
     await assert.rejects(() => access(`${output}/recovery-demo/index.html`))
-    const again = run(); assert.equal(again.status, 0, again.stderr)
-    assert.deepEqual(JSON.parse(await readFile(`${output}/release-files.json`, 'utf8')), releaseManifest)
+    const repeatedOutput = `${output}-repeat`
+    try {
+      const independentBuild = spawnSync(process.execPath, ['--import', 'tsx', 'scripts/build-static.tsx', '--input', input, '--output', repeatedOutput], { env, encoding: 'utf8' })
+      assert.equal(independentBuild.status, 0, independentBuild.stderr)
+      const repeatedManifest = JSON.parse(await readFile(`${repeatedOutput}/release-files.json`, 'utf8'))
+      assert.deepEqual(repeatedManifest, releaseManifest)
+      for (const file of releaseManifest.files as { path: string; sha256: string }[]) {
+        assert.deepEqual(await readFile(`${output}/${file.path}`), await readFile(`${repeatedOutput}/${file.path}`))
+      }
+    } finally { await rm(repeatedOutput, { recursive: true, force: true }) }
     const article = await readFile(`${output}/articles/test-article/index.html`, 'utf8')
     assert.match(article, /&lt;script&gt;alert/)
     assert.doesNotMatch(article, /<script\b|\/api\/|\/admin/)
@@ -77,7 +85,11 @@ test('explicit release requires medical-only snapshot, source SHA and canonical 
   const input = `.local/static-test-${suffix}.json`
   const output = `.local/static-test-${suffix}`
   const fixture = snapshot()
-  const env = { ...process.env, STATIC_BASE_PATH: '', STATIC_SITE_URL: 'https://womens-health-library.pages.dev', RELEASE_SOURCE_SHA: 'a'.repeat(40) }
+  const head = spawnSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' })
+  assert.equal(head.status, 0, head.stderr)
+  const exactSha = head.stdout.trim()
+  assert.match(exactSha, /^[a-f0-9]{40}$/)
+  const env = { ...process.env, STATIC_BASE_PATH: '', STATIC_SITE_URL: 'https://womens-health-library.pages.dev', RELEASE_SOURCE_SHA: exactSha }
   const build = () => spawnSync(process.execPath, ['--import', 'tsx', 'scripts/build-static.tsx', '--release', '--input', input, '--output', output], { env, encoding: 'utf8' })
   await mkdir('.local', { recursive: true })
   try {
@@ -87,7 +99,18 @@ test('explicit release requires medical-only snapshot, source SHA and canonical 
     assert.match(html, /href="\/articles\/test-article\/"/)
     assert.match(html, /href="\/assets\/styles.css"/)
     const manifest = JSON.parse(await readFile(`${output}/release-files.json`, 'utf8'))
-    assert.equal(manifest.sourceSha, 'a'.repeat(40))
+    assert.equal(manifest.sourceSha, exactSha)
+    env.RELEASE_SOURCE_SHA = 'a'.repeat(40)
+    assert.notEqual(build().status, 0, 'A fabricated source SHA must not build a release')
+    env.RELEASE_SOURCE_SHA = exactSha
+    env.STATIC_SITE_URL = ''
+    assert.notEqual(build().status, 0, 'A missing canonical URL must not build a release')
+    env.STATIC_SITE_URL = 'https://womens-health-library.pages.dev'
+    fixture.articles = []
+    await writeFile(input, JSON.stringify(fixture))
+    assert.notEqual(build().status, 0, 'An empty release requires a separate withdrawal approval')
+    fixture.articles = snapshot().articles
+    await writeFile(input, JSON.stringify(fixture))
     fixture.articles[0].reviewCategory = 'editorial'
     fixture.articles[0].publication.approvedFingerprint = fingerprint(fixture.articles[0] as unknown as Record<string, unknown>)
     await writeFile(input, JSON.stringify(fixture))
