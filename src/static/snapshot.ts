@@ -26,6 +26,8 @@ export function validateSnapshot(snapshot: StaticSnapshot, mode: 'public' | 'pre
     if (!['editorial', 'medical'].includes(article.reviewCategory)) throw new Error('Missing or invalid approval category')
     for (const reference of article.references ?? []) if (new URL(reference.url).protocol !== 'https:') throw new Error('Only HTTPS references are allowed')
     if (mode === 'public') {
+      if (article.reviewCategory !== 'medical') throw new Error(`Medical approval required for public release: ${article.slug}`)
+      if (!article.summary?.length || !article.sections?.length || !article.urgentSymptoms?.trim() || !article.references?.length) throw new Error(`Missing clinical safety content: ${article.slug}`)
       if (article.publication.status !== 'published' || article.publication.workflow !== 'published' || article.publication.approvedFingerprint !== fingerprint(article as unknown as Record<string, unknown>) || !article.reviewerName || !article.reviewedAt || !Number.isFinite(Date.parse(article.reviewedAt))) throw new Error(`Refusing to export an unapproved or changed article: ${article.slug}`)
     }
   }
